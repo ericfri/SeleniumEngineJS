@@ -72,12 +72,13 @@ const SeleniumEngine = {
 	 *
 	 * @param {String} cssSelector The css selector for the element
 	 * @param {Number} timeout_ms Timeout in ms
+	 * @param {Number} checkInterval_ms Check interval in ms
 	 *
 	 * @example
 	 * 		// Will wait until an element with id="test" is present
 	 * 		await SeleniumEngine.waitForElementPresent("#test", 2000)
 	 */
-	waitForElementPresent: function (cssSelector, timeout_ms = 30000) {
+	waitForElementPresent: function (cssSelector, timeout_ms = 30000, checkInterval_ms = 1000) {
 		if (!cssSelector.trim()) throw new Error("Please specify a css selector");
 
 		/* 
@@ -87,7 +88,7 @@ const SeleniumEngine = {
 			Ritorno il valore di un'altra Promise per poter customizzare meglio le risposte
 		*/
 		return new Promise((resolve, reject) => {
-			this.waitUntil(() => !!document.querySelector(cssSelector), timeout_ms)
+			this.waitUntil(() => !!document.querySelector(cssSelector), timeout_ms, checkInterval_ms)
 			.then((result) =>
 				resolve({
 					msg: `Element with selector ${cssSelector} is present`,
@@ -102,16 +103,17 @@ const SeleniumEngine = {
 	 *
 	 * @param {String} cssSelector The css selector for the element
 	 * @param {Number} timeout_ms Timeout in ms
+	 * @param {Number} checkInterval_ms Check interval in ms
 	 *
 	 * @example
 	 * 		// Will wait until an element with id="test" is not present
 	 * 		await SeleniumEngine.waitForElementNotPresent("#test", 2000)
 	 */
-	waitForElementNotPresent: function (cssSelector, timeout_ms = 30000) {
+	waitForElementNotPresent: function (cssSelector, timeout_ms = 30000, checkInterval_ms = 1000) {
 		if (!cssSelector.trim()) throw new Error("Please specify a css selector");
 
 		return new Promise((resolve, reject) => {
-			this.waitUntil(() => !document.querySelector(cssSelector), timeout_ms)
+			this.waitUntil(() => !document.querySelector(cssSelector), timeout_ms, checkInterval_ms)
 			.then((result) =>
 				resolve({
 					msg: `Element with selector ${cssSelector} is not present`,
